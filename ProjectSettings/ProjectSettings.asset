@@ -153,6 +153,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: jp.nkjzm.vmotion
+    Standalone: jp.nkjzm.VMotion
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19

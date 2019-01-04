@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/VMotion/Scenes/Title.unity
+    guid: a3d460b0fef754cc9862ebd9856d9942
+  - enabled: 1
+    path: Assets/VMotion/Scenes/Lyrica.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}
