@@ -2,7 +2,22 @@
 
 VRMを読み込んでモーションを再生するアプリケーション
 
-## 組み込みモデル
+## Environment
+
+- macOS 10.13.6
+- Unity2018.2.14f1
+
+## Getting Started
+
+以下のライブラリ・アセットなどをインポートしてください。
+
+- [SALSA with RandomEyes](https://assetstore.unity.com/packages/tools/animation/salsa-with-randomeyes-16944)
+- [The Greatest Japanese Fonts Bundle](https://jp.designcuts.com/product/greatest-japanese-fonts-bundle/)
+- [Modern UI Pack](https://assetstore.unity.com/packages/tools/gui/modern-ui-pack-114792)
+- [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) (VRディレクトリのみ)
+- [Native File Browser](https://assetstore.unity.com/packages/tools/utilities/native-file-browser-68064)
+
+## Models
 
 - [リリカ](https://hub.vroid.com/characters/6874596705216592350)
 - [ヴィクトリア・ルービン](https://hub.vroid.com/characters/2792872861023597723/models/5013769147837660446)
