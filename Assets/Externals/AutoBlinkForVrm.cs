@@ -1,3 +1,7 @@
+/// <remarks>
+/// The script is from https://gist.github.com/toiro/f449d1759ecd94b04f00140d47a6b338
+/// </remarks>
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +35,7 @@ public class AutoBlinkForVrm : MonoBehaviour
 
     void Update()
     {
-        if(IsBlinking)
+        if (IsBlinking)
         {
             VRM.SetValue(BlendShapePreset.Blink, player.Next(Time.deltaTime));
         }
