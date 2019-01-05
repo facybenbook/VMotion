@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d2986da455340ce8a65202b5ed2a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugAllAllow: 1
+  DebugAllAllow: 0
   ListParent: {fileID: 753888296}
   VrmItemPrafab: {fileID: 114867600510992936, guid: 5821647bdcdfb4446b0c81ba619cf9fb,
     type: 2}
@@ -662,7 +662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000008114236}
   m_SizeDelta: {x: -40, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!225 &753888297
