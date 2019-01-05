@@ -28,10 +28,12 @@ VRMを読み込んでモーションを再生するアプリケーション
 
 提供していません。([No License](https://choosealicense.com/no-permission/))
 
-### 使用しているライブラリ
+### 使用しているライブラリ等
 
 - https://github.com/dwango/UniVRM
 - https://github.com/nkjzm/Unity-SafeAreaCanvas
+- https://github.com/sh-akira/VirtualMotionCapture/blob/v0.22basefix/Assets/Scripts/VRMMetaImporter.cs
+- https://github.com/setchi/uGUI-Hypertext
 
 ## Author
 
