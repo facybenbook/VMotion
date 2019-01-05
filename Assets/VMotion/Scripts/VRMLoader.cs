@@ -14,6 +14,8 @@ namespace nkjzm.VMotion
     {
         [SerializeField]
         bool DebugAllAllow = false;
+        [SerializeField]
+        Text VersionLabel = null;
         public void OnOpenFileButtonClicked()
         {
             FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Cookies), null, null, (bool canceled, string filePath) =>
@@ -53,6 +55,7 @@ namespace nkjzm.VMotion
 
         void Start()
         {
+            VersionLabel.text = Application.version;
             LoadFromFileButton.onClick.AddListener(OnOpenFileButtonClicked);
             StartButton.onClick.AddListener(LoadScene);
 
