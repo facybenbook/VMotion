@@ -15,6 +15,9 @@ namespace nkjzm.VMotion
         AudioClip clip = null;
         [SerializeField]
         Transform camera = null;
+        [SerializeField]
+        Salsa3D DummyHead = null;
+
         void Start()
         {
             var path = GameManager.Instance.LoadVrmPath;
@@ -33,6 +36,8 @@ namespace nkjzm.VMotion
             });
         }
 
+        VRMBlendShapeProxy blendshape = null;
+        SkinnedMeshRenderer dummyBlendShape = null;
         IEnumerator Setup(GameObject go)
         {
             go.transform.position = Vector3.zero;
@@ -41,14 +46,37 @@ namespace nkjzm.VMotion
             var lookAtHead = go.GetComponent<VRMLookAtHead>();
             lookAtHead.Target = camera;
             lookAtHead.UpdateType = UpdateType.LateUpdate;
+            var skins = go.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var skin in skins)
+            {
+                skin.updateWhenOffscreen = true;
+            }
             var animator = go.GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorController;
+            blendshape = go.GetComponent<VRMBlendShapeProxy>();
+            blendshape.SetValue(BlendShapePreset.Joy, 0.5f);
             var blink = go.AddComponent<AutoBlinkForVrm>();
-            var source = go.AddComponent<AudioSource>();
+            blink.VRM = blendshape;
+            blink.blinkParameters.ratioClose = 0.5f;
+            blink.blinkParameters.interval = 0.9f;
+            var source = DummyHead.GetComponent<AudioSource>();
             source.clip = clip;
             source.loop = true;
-            // var salsa = go.AddComponent<Salsa3D>();
-            // salsa.skinnedMeshRenderer = go.GetComponentInChildren<blend
+            source.Play();
+            dummyBlendShape = DummyHead.GetComponent<SkinnedMeshRenderer>();
+            //salsa.skinnedMeshRenderer = blendshape.BlendShapeAvatar.GetClip(BlendShapePreset.A).Values[0].RelativePath
+        }
+        [SerializeField]
+        BlendShapePreset Small, Medium, Large;
+        void FixedUpdate()
+        {
+            if (blendshape == null)
+            {
+                return;
+            }
+            blendshape.SetValue(Small, dummyBlendShape.GetBlendShapeWeight(0) / 100f);
+            blendshape.SetValue(Medium, dummyBlendShape.GetBlendShapeWeight(1) / 100f);
+            blendshape.SetValue(Large, dummyBlendShape.GetBlendShapeWeight(2) / 100f);
         }
     }
 }

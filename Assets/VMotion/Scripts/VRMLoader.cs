@@ -12,6 +12,8 @@ namespace nkjzm.VMotion
 {
     public class VRMLoader : MonoBehaviour
     {
+        [SerializeField]
+        bool DebugAllAllow = false;
         public void OnOpenFileButtonClicked()
         {
             FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), null, null, (bool canceled, string filePath) =>
@@ -102,7 +104,7 @@ namespace nkjzm.VMotion
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他制限", meta.OtherPermissionUrl.ToString(), 2);
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("ライセンス", meta.LicenseType.ToString(), 2);
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他ライセンス", meta.OtherLicenseUrl.ToString(), 2);
-            GameManager.Instance.LoadVrmPath = (allowedUser && sexualUssage) ? path : string.Empty;
+            GameManager.Instance.LoadVrmPath = (DebugAllAllow || (allowedUser && sexualUssage)) ? path : string.Empty;
         }
         [SerializeField]
         RawImage ThumbnailImage = null;

@@ -77,7 +77,7 @@ public class AutoBlinkForVrm : MonoBehaviour
             .AddKey(blinkParameters.ratioHalf * ModulateRatio, closePartDuration)
             .AddKey(blinkParameters.ratioClose * ModulateRatio, closePartDuration)
             .AddKey(blinkParameters.ratioHalf * ModulateRatio, openPartDuration)
-            .AddKey(0, openPartDuration);
+            .AddKey(VRM.GetValue(BlendShapePreset.Blink), openPartDuration);
     }
 
     [Serializable]

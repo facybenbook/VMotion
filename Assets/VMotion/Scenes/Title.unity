@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d2986da455340ce8a65202b5ed2a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugAllAllow: 1
   ListParent: {fileID: 753888296}
   VrmItemPrafab: {fileID: 114867600510992936, guid: 5821647bdcdfb4446b0c81ba619cf9fb,
     type: 2}
@@ -661,7 +662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000014814284}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -40, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!225 &753888297
@@ -687,9 +688,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
+    m_Left: 1
+    m_Right: 1
+    m_Top: 1
     m_Bottom: 80
   m_ChildAlignment: 1
   m_Spacing: 10
@@ -988,17 +989,17 @@ Prefab:
     - target: {fileID: 224743570235656286, guid: f441c161692704f8fa30163cc8ea8c53,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.054187194
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224743570235656286, guid: f441c161692704f8fa30163cc8ea8c53,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.056
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224743570235656286, guid: f441c161692704f8fa30163cc8ea8c53,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.9458128
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 223620476420347886, guid: f441c161692704f8fa30163cc8ea8c53,
         type: 2}
