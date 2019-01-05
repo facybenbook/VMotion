@@ -2,103 +2,151 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using PygmyMonkey.FileBrowser;
 using UnityEngine;
 using UnityEngine.UI;
 using VRM;
 
-public class VRMLoader : MonoBehaviour
+namespace nkjzm.VMotion
 {
-    public void OnOpenFileButtonClicked()
+    public class VRMLoader : MonoBehaviour
     {
-        FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), null, null, (bool canceled, string filePath) =>
+        public void OnOpenFileButtonClicked()
         {
-            // m_RawImage.gameObject.SetActive(false);
-            // m_ContentText.gameObject.SetActive(true);
-
-            if (canceled)
+            FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), null, null, (bool canceled, string filePath) =>
             {
-                // m_ContentText.text = "[Open File]\nCanceled";
-                Debug.Log("きゃんせる");
-                return;
+                // m_RawImage.gameObject.SetActive(false);
+                // m_ContentText.gameObject.SetActive(true);
+
+                if (canceled)
+                {
+                    // m_ContentText.text = "[Open File]\nCanceled";
+                    Debug.Log("きゃんせる");
+                    return;
+                }
+
+                Debug.Log("選択: " + filePath);
+                // m_ContentText.text = "[Open File]\n<b>Selected file</b>: " + filePath;
+            });
+        }
+
+        [SerializeField]
+        Transform ListParent = null;
+        [SerializeField]
+        VRMListItem VrmItemPrafab = null;
+
+        [SerializeField]
+        Button LoadFromFileButton = null;
+        [SerializeField]
+        Button StartButton = null;
+
+        void LoadScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Motion");
+        }
+
+        void Start()
+        {
+            ImportVRMAsync_Net4();
+        }
+
+        void Update()
+        {
+            StartButton.interactable = !string.IsNullOrEmpty(GameManager.Instance.LoadVrmPath);
+        }
+
+
+        async Task ImportVRMAsync_Net4()
+        {
+            LoadFromFileButton.onClick.AddListener(OnOpenFileButtonClicked);
+            StartButton.onClick.AddListener(LoadScene);
+
+            var path = Application.streamingAssetsPath;
+            var files = Directory.GetFiles(Application.streamingAssetsPath, "*.vrm", System.IO.SearchOption.AllDirectories);
+            foreach (var vrmFile in files)
+            {
+                Debug.Log(vrmFile);
+                var meta = await VRMMetaImporter.ImportVRMMeta(vrmFile, true);
+
+                Debug.LogFormat("meta: title:{0}", meta.Title);
+                Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
+                var item = Instantiate(VrmItemPrafab, ListParent);
+                item.Init(meta, vrmFile);
             }
-
-            Debug.Log("選択: " + filePath);
-            // m_ContentText.text = "[Open File]\n<b>Selected file</b>: " + filePath;
-        });
-    }
-
-    [SerializeField]
-    Transform ListParent = null;
-    [SerializeField]
-    VRMListItem VrmItemPrafab = null;
-
-    [SerializeField]
-    Button LoadFromFileButton = null;
-
-    void Start()
-    {
-        LoadFromFileButton.onClick.AddListener(OnOpenFileButtonClicked);
-
-        var path = Application.streamingAssetsPath;
-        var files = Directory.GetFiles(Application.streamingAssetsPath, "*.vrm", System.IO.SearchOption.AllDirectories);
-        foreach (var vrmFile in files)
-        {
-            Debug.Log(vrmFile);
-
-            // Byte列を得る
-            var bytes = File.ReadAllBytes(vrmFile);
-            var context = new VRMImporterContext();
-            // GLB形式をParseしてチャンクからJSONを取得しParseします
-            context.ParseGlb(bytes);
-            // metaを取得
-            var meta = context.ReadMeta(true);
-            Debug.LogFormat("meta: title:{0}", meta.Title);
-            Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
-            var item = Instantiate(VrmItemPrafab, ListParent);
-            item.Init(meta.Title, meta.Version, meta.ExporterVersion, meta.Thumbnail);
         }
 
-        return;
-        OnOpenFileButtonClicked();
-
-        if (string.IsNullOrEmpty(path))
+        public void SelectItem(VRMMetaObject meta, string path)
         {
-            return;
+            foreach (Transform child in BasicInfoListParent)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in LicenseInfoListParent)
+            {
+                Destroy(child.gameObject);
+            }
+            ThumbnailImage.texture = meta.Thumbnail;
+            var allowedUser = !meta.AllowedUser.Equals(AllowedUser.OnlyAuthor);
+            //var violensUssage = meta.ViolentUssage.Equals(UssageLicense.Allow);
+            var sexualUssage = meta.SexualUssage.Equals(UssageLicense.Allow);
+            Instantiate(InfoListItemsPrefab, BasicInfoListParent).Init("タイトル", meta.Title, 2);
+            Instantiate(InfoListItemsPrefab, BasicInfoListParent).Init("バージョン", meta.Version, 2);
+            Instantiate(InfoListItemsPrefab, BasicInfoListParent).Init("作者", meta.Author, 2);
+            Instantiate(InfoListItemsPrefab, BasicInfoListParent).Init("連絡先", meta.ContactInformation, 2);
+            Instantiate(InfoListItemsPrefab, BasicInfoListParent).Init("親作品", meta.Reference, 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("アバター利用", meta.AllowedUser.ToString(), allowedUser ? 0 : 1);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("暴力表現", meta.ViolentUssage.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("性的表現", meta.SexualUssage.ToString(), sexualUssage ? 0 : 1);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("商用利用", meta.CommercialUssage.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他制限", meta.OtherPermissionUrl.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("ライセンス", meta.LicenseType.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他ライセンス", meta.OtherLicenseUrl.ToString(), 2);
+            GameManager.Instance.LoadVrmPath = (allowedUser && sexualUssage) ? path : string.Empty;
+        }
+        [SerializeField]
+        RawImage ThumbnailImage = null;
+        [SerializeField]
+        VRMInfoListItem InfoListItemsPrefab = null;
+        [SerializeField]
+        Transform BasicInfoListParent = null, LicenseInfoListParent = null;
+
+        void aaa()
+        {
+            // OnOpenFileButtonClicked();
+
+            // if (string.IsNullOrEmpty(path))
+            // {
+            //     return;
+            // }
+
+            // // Byte列を得る
+            // var bytes = File.ReadAllBytes(path);
+
+            // var context = new VRMImporterContext();
+
+            // // GLB形式をParseしてチャンクからJSONを取得しParseします
+            // context.ParseGlb(bytes);
+
+            // // metaを取得
+            // var meta = context.ReadMeta(true);
+            // Debug.LogFormat("meta: title:{0}", meta.Title);
+            // Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
+
+            // return;
+            // // 非同期に実行する
+            // var now = Time.time;
+            // VRMImporter.LoadVrmAsync(context, go =>
+            // {
+            //     var delta = Time.time - now;
+            //     Debug.LogFormat("LoadVrmAsync {0:0.0} seconds", delta);
+            //     OnLoaded(go);
+            // });
         }
 
-        // // Byte列を得る
-        // var bytes = File.ReadAllBytes(path);
+        void OnLoaded(GameObject goa)
+        {
 
-        // var context = new VRMImporterContext();
-
-        // // GLB形式をParseしてチャンクからJSONを取得しParseします
-        // context.ParseGlb(bytes);
-
-        // // metaを取得
-        // var meta = context.ReadMeta(true);
-        // Debug.LogFormat("meta: title:{0}", meta.Title);
-        // Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
-
-        // return;
-        // // 非同期に実行する
-        // var now = Time.time;
-        // VRMImporter.LoadVrmAsync(context, go =>
-        // {
-        //     var delta = Time.time - now;
-        //     Debug.LogFormat("LoadVrmAsync {0:0.0} seconds", delta);
-        //     OnLoaded(go);
-        // });
-    }
-
-    void OnLoaded(GameObject goa)
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        }
     }
 }
