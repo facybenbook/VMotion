@@ -44,9 +44,11 @@ namespace nkjzm.VMotion
         [SerializeField]
         Button StartButton = null;
 
+        [SerializeField]
+        string SceneName = string.Empty;
         void LoadScene()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Motion");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneName);
         }
 
         void Start()
