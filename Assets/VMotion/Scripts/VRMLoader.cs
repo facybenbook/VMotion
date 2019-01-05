@@ -16,7 +16,7 @@ namespace nkjzm.VMotion
         bool DebugAllAllow = false;
         public void OnOpenFileButtonClicked()
         {
-            FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), null, null, (bool canceled, string filePath) =>
+            FileBrowser.OpenFilePanel("Open file Title", Environment.GetFolderPath(Environment.SpecialFolder.Cookies), null, null, (bool canceled, string filePath) =>
             {
                 // m_RawImage.gameObject.SetActive(false);
                 // m_ContentText.gameObject.SetActive(true);
@@ -29,6 +29,7 @@ namespace nkjzm.VMotion
                 }
 
                 Debug.Log("選択: " + filePath);
+                ImportVRMAsync_Net4(filePath, true);
                 // m_ContentText.text = "[Open File]\n<b>Selected file</b>: " + filePath;
             });
         }
@@ -50,7 +51,15 @@ namespace nkjzm.VMotion
 
         void Start()
         {
-            ImportVRMAsync_Net4();
+            LoadFromFileButton.onClick.AddListener(OnOpenFileButtonClicked);
+            StartButton.onClick.AddListener(LoadScene);
+
+            var path = Application.streamingAssetsPath;
+            var files = Directory.GetFiles(Application.streamingAssetsPath, "*.vrm", System.IO.SearchOption.AllDirectories);
+            foreach (var vrmFile in files)
+            {
+                ImportVRMAsync_Net4(vrmFile);
+            }
         }
 
         void Update()
@@ -59,22 +68,17 @@ namespace nkjzm.VMotion
         }
 
 
-        async Task ImportVRMAsync_Net4()
+        async Task ImportVRMAsync_Net4(string filePath, bool isSelect = false)
         {
-            LoadFromFileButton.onClick.AddListener(OnOpenFileButtonClicked);
-            StartButton.onClick.AddListener(LoadScene);
+            var meta = await VRMMetaImporter.ImportVRMMeta(filePath, true);
 
-            var path = Application.streamingAssetsPath;
-            var files = Directory.GetFiles(Application.streamingAssetsPath, "*.vrm", System.IO.SearchOption.AllDirectories);
-            foreach (var vrmFile in files)
+            Debug.LogFormat("meta: title:{0}", meta.Title);
+            Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
+            var item = Instantiate(VrmItemPrafab, ListParent);
+            item.Init(meta, filePath);
+            if (isSelect)
             {
-                Debug.Log(vrmFile);
-                var meta = await VRMMetaImporter.ImportVRMMeta(vrmFile, true);
-
-                Debug.LogFormat("meta: title:{0}", meta.Title);
-                Debug.LogFormat("meta: meta.SexualUssage:{0}", meta.SexualUssage);
-                var item = Instantiate(VrmItemPrafab, ListParent);
-                item.Init(meta, vrmFile);
+                SelectItem(meta, filePath);
             }
         }
 
