@@ -94,6 +94,7 @@ namespace nkjzm.VMotion
             {
                 Destroy(child.gameObject);
             }
+            // meta.OtherLicenseUrl = null;
             ThumbnailImage.texture = meta.Thumbnail;
             var allowedUser = !meta.AllowedUser.Equals(AllowedUser.OnlyAuthor);
             //var violensUssage = meta.ViolentUssage.Equals(UssageLicense.Allow);
@@ -107,9 +108,9 @@ namespace nkjzm.VMotion
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("暴力表現", meta.ViolentUssage.ToString(), 2);
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("性的表現", meta.SexualUssage.ToString(), sexualUssage ? 0 : 1);
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("商用利用", meta.CommercialUssage.ToString(), 2);
-            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他制限", meta.OtherPermissionUrl.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他制限", meta.OtherPermissionUrl, 2);
             Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("ライセンス", meta.LicenseType.ToString(), 2);
-            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他ライセンス", meta.OtherLicenseUrl.ToString(), 2);
+            Instantiate(InfoListItemsPrefab, LicenseInfoListParent).Init("その他ライセンス", meta.OtherLicenseUrl, 2);
             GameManager.Instance.LoadVrmPath = (DebugAllAllow || (allowedUser && sexualUssage)) ? path : string.Empty;
         }
         [SerializeField]
