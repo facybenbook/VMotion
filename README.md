@@ -35,6 +35,7 @@ VRMを読み込んでモーションを再生するアプリケーション
 - https://github.com/sh-akira/VirtualMotionCapture/blob/v0.22basefix/Assets/Scripts/VRMMetaImporter.cs
 - https://github.com/setchi/uGUI-Hypertext
 - https://qiita.com/dj_kusuha/items/13a68474edfd78e41b82
+- https://github.com/negipoyoc/UnityAutoIconBuilder
 
 ## Author
 
