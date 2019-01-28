@@ -16,6 +16,7 @@ VRMを読み込んでモーションを再生するアプリケーション
 - [Modern UI Pack](https://assetstore.unity.com/packages/tools/gui/modern-ui-pack-114792)
 - [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) (VRディレクトリのみ)
 - [Native File Browser](https://assetstore.unity.com/packages/tools/utilities/native-file-browser-68064)
+- [VRoid SDK](https://developer.vroid.com/sdk/) (現在は一部開発者にのみ配布)
 
 ## Models
 
