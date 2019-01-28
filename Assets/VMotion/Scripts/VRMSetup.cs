@@ -6,6 +6,7 @@ using CrazyMinnow.SALSA;
 using UniGLTF;
 using UnityEngine;
 using VRM;
+using VRoidSDK;
 
 namespace nkjzm.VMotion
 {
@@ -22,6 +23,11 @@ namespace nkjzm.VMotion
 
         void Start()
         {
+            if (GameManager.Instance.FromVRoidHub)
+            {
+                LoadCharacter(GameManager.Instance.LoadVrmPath);
+                return;
+            }
             var path = GameManager.Instance.LoadVrmPath;
 
             // Byte列を得る
@@ -36,6 +42,29 @@ namespace nkjzm.VMotion
             {
                 StartCoroutine(Setup(go));
             });
+        }
+
+        void LoadCharacter(string characterModelId)
+        {
+            HubModelDeserializer.Instance.LoadCharacterAsync(
+                characterModelId: characterModelId,
+                onLoadComplete: (GameObject characterObj) =>
+                {
+                    StartCoroutine(Setup(characterObj));
+                },
+                onDownloadProgress: (float progress) =>
+                {
+                    // thumbnailImage.ShowDownloadProgress(progress);
+                    // if (progress >= 1.0f)
+                    // {
+                    //     thumbnailImage.ChangeLoadingMessage(true);
+                    // }
+                },
+                onError: (System.Exception error) =>
+                {
+                    Debug.LogError(error.Message);
+                }
+            );
         }
 
         VRMBlendShapeProxy blendshape = null;

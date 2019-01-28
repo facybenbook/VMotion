@@ -7,11 +7,11 @@ namespace nkjzm.VMotion
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         public string LoadVrmPath = string.Empty;
+        public bool FromVRoidHub = false;
 
         void Start()
         {
             DontDestroyOnLoad(gameObject);
         }
-
     }
 }
